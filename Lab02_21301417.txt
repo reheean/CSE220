@@ -1,0 +1,351 @@
+# Task-1(i)
+class Node:
+    def __init__(self, data):
+        self.data = data
+        self.next = None
+
+# Task-1(ii)
+class MyList:
+
+    # Task-2(1)
+    def __init__(self, array):
+        if len(array) == 0:
+            self.head = None
+            print("Array cannot be empty.")
+        else:
+            self.head = Node(array[0])
+            temp = self.head
+            for i in range(1, len(array)):
+                temp.next = Node(array[i])
+                temp = temp.next
+
+    def size(self):
+        length = 0
+        n = self.head
+        while n is not None:
+            length += 1
+            n = n.next
+        return length
+
+    # Task-2(2)
+    def showList(self):
+        if self.head is None:
+            print("Empty List")
+        else:
+            n = self.head
+            while n is not None:
+                if n.next is None:
+                    print(n.data, '--> None')
+                else:
+                    print(n.data, '--> ', end = '')
+                n = n.next
+
+    # Task-2(3)
+    def isEmpty(self):
+        temp = 0
+        n = self.head
+        while n is not None:
+            temp += n.data
+            n = n.next
+
+        if temp == 0:
+            return True
+        else:
+            return False
+
+    # Task-2(4)
+    def clear(self):
+        if self.isEmpty() == True:
+            print("List is already empty.")
+        else:
+            self.head = None
+
+    # Task-2(5)
+    def insertAtEnd(self, newElement):
+        node = Node(newElement)
+        if self.head is None:
+            self.head = node
+        else:
+            temp = 0
+            n = self.head
+            while n.next is not None:
+                if n.data == node.data:
+                    print("Already exists.")
+                    temp += 1
+                    break
+                n = n.next
+
+            if temp == 0:
+                n.next = node
+
+    # Task-2(6)
+    def insert(self, newElement, index):
+        temp = 0
+        node = Node(newElement)
+        n = self.head
+        while n.next is not None:
+            if n.data == node.data:
+                print("Already exists.")
+                temp += 1
+                break
+            n = n.next
+
+        if temp == 0:
+            if index <= self.size():
+                if self.head is None:
+                    print("Linked list is empty.")
+                else:
+                    if index == 0:
+                        node.next = self.head
+                        self.head = node
+                        return
+
+                    else:
+                        n = self.head
+                        prev = None
+                        while n is not None:
+                            temp += 1
+                            if temp == index:
+                                prev = n
+                                n = n.next
+                                print(prev.data, n.data)
+                                break
+                            n = n.next
+
+                        node.next = n
+                        prev.next = node
+
+            else:
+                print("Index out of range.")
+
+    # Task-2(7)
+    def remove(self, deletekey):
+        if self.head.data == deletekey:
+            self.head = self.head.next
+        else:
+            n = self.head
+            next_node = None
+            temp = 0
+            while n is not None:
+                if n.next.data == deletekey and n.next.next is not None:
+                    n = n
+                    next_node = n.next.next
+                    break
+
+                elif n.next.data == deletekey and n.next.next is None:
+                    temp += 1
+                    break
+                n = n.next
+
+            if temp == 0:
+                n.next = next_node
+            else:
+                n.next = None
+
+    # Task-3(1)
+    def evenLinkedList(self):
+        temp = 0
+        n = self.head
+        while n is not None:
+            if n.data % 2 == 0:
+                temp += 1
+            n = n.next
+
+        if temp == 0:
+            print("No even data found in list.")
+        else:
+            temp_array = [0] * temp
+            i = 0
+            n = self.head
+            while i != len(temp_array) and n is not None:
+                if n.data % 2 == 0:
+                    temp_array[i] = n.data
+                    i += 1
+                n = n.next
+            MyList(temp_array).showList()
+
+    # Task-3(2)
+    def findData(self, element):
+        temp = 0
+        n = self.head
+        while n is not None:
+            if n.data == element:
+                temp += 1
+            n = n.next
+
+        if temp > 0:
+            print(True)
+        else:
+            print(False)
+
+    # Task-3(3)
+    def reverseList(self):
+        prev_node = None
+        pointer = self.head
+        next_node = self.head.next
+        while pointer is not None:
+            next_node = pointer.next
+            pointer.next = prev_node
+            prev_node = pointer
+            pointer = next_node
+        self.head = prev_node
+
+    # Task-3(4)
+    def sortList(self):
+        for i in range(self.size() - 1):
+            n = self.head
+            next_node = n.next
+            prev = None
+            while next_node is not None:
+                if n.data > next_node.data:
+                    if prev is None:
+                        prev = n.next
+                        next_node = next_node.next
+                        prev.next = n
+                        n.next = next_node
+                        self.head = prev
+                    else:
+                        hold = next_node
+                        next_node = next_node.next
+                        prev.next = n.next
+                        prev = hold
+                        hold.next = n
+                        n.next = next_node
+                else:
+                    prev = n
+                    n = next_node
+                    next_node = next_node.next
+
+    # Task-3(5)
+    def sumData(self):
+        total = 0
+        n = self.head
+        while n is not None:
+            total += n.data
+            n = n.next
+        print(total)
+
+    # Task-3(6)
+    def rotateByKTimes(self, direction, times):
+        temp = self.head
+        if direction == 'Left':
+            for i in range(times):
+                hold = self.head
+                self.head = self.head.next
+                n = self.head
+                temp_node = Node(0)
+                while n is not None:
+                    if n.next is None:
+                        temp_node = n
+                    n = n.next
+                temp_node.next = hold
+                hold.next = None
+
+        else:
+            for i in range(times):
+                prev = Node(None)
+                last_node = Node(None)
+                n = self.head
+                while n is not None:
+                    if n.next is None:
+                        last_node = n
+                    else:
+                        prev = n
+                    n = n.next
+                prev.next = None
+                last_node.next = self.head
+                self.head = last_node
+
+# Test statements
+L1 = MyList([1, 2, 3, 4, 5, 6])
+L2 = MyList([7, 8, 9, 10])
+print("Printing Linked List 1:")
+L1.showList()
+print('---------------')
+print("isEmpty() method:")
+print(L1.isEmpty())
+print('---------------')
+print("clear() method:")
+L1.clear()
+L1.showList()
+print('---------------')
+print("Inserting a node at the end of the list:")
+L2.insertAtEnd(11)
+L2.showList()
+print('---------------')
+print("Inserting a node at a given index:")
+L2.insert(6, 0)
+L2.showList()
+print('---------------')
+print("remove() method:")
+L2.remove(9)
+L2.showList()
+print('---------------')
+print("Linked list with only the even data:")
+L2.evenLinkedList()
+print('---------------')
+print("Finding a data in the linked list:")
+L2.findData(7)
+print('---------------')
+print("reverse() method:")
+L2.reverseList()
+L2.showList()
+print('---------------')
+print("sort() method:")
+L2.sortList()
+L2.showList()
+print('---------------')
+print("Sum of the data in the linked list:")
+L2.sumData()
+print('---------------')
+print("Rotating the linked list to left/right by k times:")
+print("Rotating right by 4 times:")
+L2.rotateByKTimes('Right', 4)
+L2.showList()
+print("Rotating left by 3 times:")
+L2.rotateByKTimes('Left', 3)
+L2.showList()
+
+
+==========================================================================================================================
+Output:
+Printing Linked List 1:
+1 --> 2 --> 3 --> 4 --> 5 --> 6 --> None
+---------------
+isEmpty() method:
+False
+---------------
+clear() method:
+Empty List
+---------------
+Inserting a node at the end of the list:
+7 --> 8 --> 9 --> 10 --> 11 --> None
+---------------
+Inserting a node at a given index:
+6 --> 7 --> 8 --> 9 --> 10 --> 11 --> None
+---------------
+remove() method:
+6 --> 7 --> 8 --> 10 --> 11 --> None
+---------------
+Linked list with only the even data:
+6 --> 8 --> 10 --> None
+---------------
+Finding a data in the linked list:
+True
+---------------
+reverse() method:
+11 --> 10 --> 8 --> 7 --> 6 --> None
+---------------
+sort() method:
+6 --> 7 --> 8 --> 10 --> 11 --> None
+---------------
+Sum of the data in the linked list:
+42
+---------------
+Rotating the linked list to left/right by k times:
+Rotating right by 4 times:
+7 --> 8 --> 10 --> 11 --> 6 --> None
+Rotating left by 3 times:
+11 --> 6 --> 7 --> 8 --> 10 --> None
+
+Process finished with exit code 0

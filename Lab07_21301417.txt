@@ -1,0 +1,140 @@
+# Assignment 7
+# Name: Rodoshie Reheean
+# ID: 21301417
+# Sec: 16
+
+
+# Task-1
+class keyIndex:
+    def __init__(self, array):
+        self.k = []
+        self.array = array
+        minimum = self.findMin()
+        maximum = self.findMax()
+
+        if minimum >= 0:
+            size = maximum + 1
+            self.k = [0] * size
+        else:
+            size = maximum + abs(minimum) + 1
+            self.k = [0] * size
+
+        if minimum >= 0:
+            for i in array:
+                self.k[i] += 1
+
+        else:
+            for i in array:
+                self.k[i + abs(minimum)] += 1
+
+
+    def findMin(self):
+        min = self.array[0]
+        for i in self.array:
+            if i < min:
+                min = i
+        return min
+
+
+    def findMax(self):
+        max = self.array[0]
+        for i in self.array:
+            if i > max:
+                max = i
+        return max
+
+
+    def search(self, key):
+        minimum = self.findMin()
+
+        if minimum >= 0:
+            if (key >= 0) and (key < len(self.k)):
+                if self.k[key] > 0:
+                    return True
+                else:
+                    return False
+            else:
+                return False
+        else:
+            if (key >= 0) and ((key + abs(minimum)) < len(self.k)):
+                if self.k[key + abs(minimum)] > 0:
+                    return True
+                else:
+                    return False
+            else:
+                return False
+
+
+    def sort(self):
+        count = 0
+        for i in range(len(self.k)):
+            if self.k[i] > 0:
+                for j in range(self.k[i]):
+                    if self.findMin() >= 0:
+                        self.array[count] = i
+                        count += 1
+                    else:
+                        self.array[count] = i + self.findMin()
+                        count += 1
+        print(self.array)
+
+
+
+# Task-2
+class hashtable:
+    def __init__(self, array):
+        self.k = [None] * len(array)
+        self.array = array
+
+        vowel = ['A', 'E', 'I', 'O', 'U']
+        numbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
+
+        for string in self.array:
+            consonant = 0
+            summation = 0
+            for char in string:
+                if char not in vowel and char not in numbers:
+                    consonant += 1
+                if char in numbers:
+                    summation += int(char)
+            index = ((consonant * 24) + summation) % 9
+
+            if self.k[index] is None:
+                self.k[index] = string
+            else:
+                count = index
+                while self.k[count] is not None:
+                    count += 1
+                    if count >= len(self.array):
+                        count = count % (len(self.array) + 1)
+
+                self.k[count] = string
+
+
+    def showAuxArray(self):
+        print(self.k)
+
+
+
+# Test statements for Task-1
+print("=============================================================================================================")
+print("TASK-1")
+arr1 = [-2, -4, 5, 5, 5, 3, 4, 6]
+k1 = keyIndex(arr1)
+print("Given array: [-2, -4, 5, 5, 5, 3, 4, 6]")
+print("Searching 5 in the array with key indexing: Output--> ", end='')
+print(k1.search(5))
+print("Searching -1 in the array with key indexing: Output--> ", end='')
+print(k1.search(-1))
+print("Sorting the given array with key index sorting: Output--> ", end='')
+k1.sort()
+
+# Test statements for Task-2
+print("=============================================================================================================")
+print("TASK-2")
+str_arr = ["ST1E89B8A32", "RFY97GHER7D", "X1H1775SOG2", "LOF2G5GZZ31", "97UKQDFO248", "ENAYTNO0AGH", "0MGM4AP96PT", "287I8NG5FUG", "E3HEBGW3QAP"]
+print('Given array: ["ST1E89B8A32", "RFY97GHER7D", "X1H1775SOG2", "LOF2G5GZZ31", "97UKQDFO248", "ENAYTNO0AGH", "0MGM4AP96PT", "287I8NG5FUG", "E3HEBGW3QAP"]')
+h1 = hashtable(str_arr)
+print()
+print("Using hashing, we get the following array:")
+h1.showAuxArray()

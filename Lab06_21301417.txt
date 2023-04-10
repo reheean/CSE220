@@ -1,0 +1,243 @@
+# Name: Rodoshie Reheean
+# ID : 21301417
+# sec: 16
+
+
+# 1
+# Recursive Function to find the minimum value index in an array
+def findMin(arr, pointer, mindx=None):
+    if mindx is None:
+        mindx = pointer
+        pointer += 1
+    if pointer >= len(arr):
+        return mindx
+    else:
+        if arr[mindx] > arr[pointer]:
+            mindx = pointer
+        return findMin(arr, pointer + 1, mindx)
+
+
+# 2
+def arrayInsertionSort(arr, length=None):
+    if length is None:
+        length = len(arr)
+    if length <= 1:
+        return
+    arrayInsertionSort(arr, length - 1)
+    temp = arr[length - 1]
+    i = length - 2
+    while i >= 0 and arr[i] > temp:
+        arr[i + 1] = arr[i]
+        i -= 1
+    arr[i+1] = temp
+
+
+# Recursive Selection Sort Function
+def selectionSort(ar, i=0, j=1):
+    if i >= len(ar) or j >= len(ar):
+        return ar
+    else:
+        temp = findMin(ar, j)
+        if ar[i] > ar[temp]:
+            ar[i], ar[temp] = ar[temp], ar[i]
+
+        return selectionSort(ar, i + 1, j + 1)
+
+
+class Node:
+    def __init__(self, data):
+        self.data = data
+        self.next = None
+        self.prev = None
+
+
+class SinglyLinkedList:
+    def __init__(self, array):
+        if len(array) == 0:
+            self.head = None
+            print("Array cannot be empty.")
+        else:
+            self.head = Node(array[0])
+            temp = self.head
+            for i in range(1, len(array)):
+                temp.next = Node(array[i])
+                temp = temp.next
+
+    def size(self):
+        length = 0
+        if self.head is None:
+            return 0
+        else:
+            n = self.head
+            while n is not None:
+                length += 1
+                n = n.next
+
+            return length
+
+    def printList(self):
+        if self.head is None:
+            print("List is empty!")
+        else:
+            n = self.head
+            while n is not None:
+                print(n.data, '-->', end=' ')
+                n = n.next
+
+    # 3
+    def bubbleSort(self):
+        for i in range(self.size()):
+            n = self.head
+            m = self.head.next
+            while m is not None:
+                if n.data > m.data:
+                    n.data, m.data = m.data, n.data
+                n = n.next
+                m = m.next
+
+    # 4
+    def selSort(self):
+        n = self.head
+        while n is not None:
+            minimum = n
+            m = n
+            while m is not None:
+                if m.data < minimum.data:
+                    minimum = m
+                if n is not minimum:
+                    n.data, minimum.data = minimum.data, n.data
+                    minimum = n
+                m = m.next
+            n = n.next
+
+
+# Doubly Linked List
+class DoublyLinkedList:
+    def __init__(self):
+        self.head = None
+        self.tail = None
+
+    def insert(self, value):
+        node = Node(value)
+        if self.head is None:
+            self.head = node
+            self.tail = node
+            return
+
+        self.tail.next = node
+        node.prev = self.tail
+        self.tail = node
+
+    def showList(self):
+        n = self.head
+        while n is not None:
+            print(n.data, end=' <--> ')
+            n = n.next
+
+    def swapData(self, n1, n2):
+        temp = n1.data
+        n1.data = n2.data
+        n2.data = temp
+
+    # 5
+    def insertionSort(self):
+        i = self.head
+        while i.next is not None:
+            j = i.next
+            while j is not None and j.prev is not None and j.data < j.prev.data:
+                self.swapData(j, j.prev)
+                j = j.prev
+            i = i.next
+
+
+
+
+
+# 6-Array
+def binarySearch(array, key, left=0, right=None):
+    if right is None:
+        right = len(array) - 1
+    if left > right:
+        return False
+
+    mid = (right + left) // 2
+    if key == array[mid]:
+        return mid
+    elif key > array[mid]:
+        return binarySearch(array, key, mid + 1, right)
+    else:
+        return binarySearch(array, key, left, mid - 1)
+
+
+
+# 7
+def fibonacci(num):
+    array = [0] * (num + 1)
+    array[0] = 0
+    array[1] = 1
+    for i in range(2, len(array)):
+        array[i] = array[i - 1] + array[i - 2]
+    return array[num]
+
+
+# Tester Statements
+print('=================================================================================')
+print("///TASK 1///")
+print('Selection Sort of an array Recursively:')
+print('Given array --> [2, 1, 3, 4, 6, 5, 9, 8, 7]')
+print('Recursive function for selection sort:', selectionSort([2, 1, 3, 4, 6, 5, 9, 8, 7]))
+print('=================================================================================')
+print('///TASK 2///')
+print('Insertion Sort of an array Recursively:')
+print('Given array --> [14, 12, 19, 9, 8, 1]')
+arr1 = [14, 12, 19, 9, 8, 1]
+insort = arrayInsertionSort(arr1)
+print('Recursive function for insertion sort:', arr1)
+print('=================================================================================')
+list1 = SinglyLinkedList([5, 7, 4, 1, 2, 3, 8, 6])
+print("///TASK 3///")
+print('Bubble Sort algorithm for Singly Linked List:')
+print('Given list:  ', end='')
+list1.printList()
+print()
+print("Bubble Sorting:  ", end='')
+list1.bubbleSort()
+list1.printList()
+print()
+print('=================================================================================')
+list2 = SinglyLinkedList([13, 12, 10, 11, 15])
+print("///TASK 4///")
+print('Selection Sort algorithm for Singly Linked List:')
+print('Given list:  ', end='')
+list2.printList()
+print()
+print('Selection Sorting:  ', end='')
+list2.selSort()
+list2.printList()
+print()
+print('=================================================================================')
+print('///TASK 5///')
+print('Insertion Sort Algorithm for Doubly Linked List:')
+print('Given List:  ', end='')
+dlist = DoublyLinkedList()
+dlist.insert(2)
+dlist.insert(5)
+dlist.insert(0)
+dlist.insert(4)
+dlist.insert(3)
+dlist.showList()
+print()
+print('Insertion Sorting:  ', end='')
+dlist.insertionSort()
+dlist.showList()
+print()
+print('=================================================================================')
+print("///TASK 6///")
+print('Recursive algorithm for Binary Search:')
+print('Index of "13" in the array--> [1, 3, 5, 7, 9, 13, 15, 18, 21, 25]: ', end='')
+print(binarySearch([1, 3, 5, 7, 9, 13, 15, 18, 21, 25], 13))
+print('=================================================================================')
+print("///TASK 7///")
+print('Recursive algorithm to find the n-th Fibonacci number using memoization:')
+print('The 6th fibonacci number in the series: ', fibonacci(6))
+print('=================================================================================')

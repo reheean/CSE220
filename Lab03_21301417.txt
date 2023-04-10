@@ -1,0 +1,240 @@
+Rodoshie Reheean
+ID: 21301417
+Sec: 16
+#=======================================================================================================#
+Code:
+#=======================================================================================================#
+
+class Node:
+    def __init__(self, data):
+        self.data = data
+        self.prev = None
+        self.next = None
+
+class DoublyList:
+    def __init__(self, array):
+        if len(array) == 0:
+            print("Array cannot be empty")
+        else:
+            self.head = Node(None)
+            temp = self.head
+            prev = None
+            for i in range(len(array)):
+                temp.next = Node(array[i])
+                temp.prev = prev
+                prev = temp
+                temp = temp.next
+            self.tail = temp
+            self.tail.prev = prev
+            self.tail.next = self.head
+            self.head.prev = self.tail
+
+    def size(self):
+        length = 0
+        n = self.head.next
+        while n is not self.head:
+            length += 1
+            n = n.next
+        return length
+
+    def showList(self):
+        if self.head is None:
+            print("Empty List")
+        else:
+            print('->', end= ' ')
+            temp = self.head.next
+            while temp is not self.head:
+                if temp.next is not self.head:
+                    print(temp.data, end=' <--> ')
+                else:
+                    print(temp.data, '<-')
+                temp = temp.next
+
+    def insertAtTail(self, newElement):
+        temp = 0
+        n = self.head.next
+        while n is not self.head:
+            if n.data == newElement:
+                temp += 1
+            n = n.next
+
+        if temp > 0:
+            print("The key %.d already exists." %(newElement))
+        else:
+            t = self.tail
+            self.tail = Node(newElement)
+            t.next = self.tail
+            self.tail.prev = t
+            self.tail.next = self.head
+
+    def insert(self, newElement, index):
+        length = self.size()
+        if length != 0:
+            if index >= length:
+                print("Invalid Index")
+            else:
+                temp = 0
+                n = self.head.next
+                while n is not self.head:
+                    if n.data == newElement:
+                        temp += 1
+                    n = n.next
+
+                if temp > 0:
+                    print("The key %.d already exists." %(newElement))
+                else:
+                    if index == length - 1:
+                        t = self.tail
+                        self.tail = Node(newElement)
+                        t.next = self.tail
+                        self.tail.prev = t
+                        self.tail.next = self.head
+                    else:
+                        node = Node(newElement)
+                        next_node = Node(None)
+                        i = 0
+                        h = self.head.next
+                        while h is not self.head:
+                            if i == index:
+                                next_node = h
+                            h = h.next
+                            i += 1
+                        prev_node = next_node.prev
+                        prev_node.next = node
+                        node.next = next_node
+                        node.prev = prev_node
+                        next_node.prev = node
+        else:
+            print("List is empty")
+
+    def remove(self, index):
+        length = self.size()
+        if length != 0:
+            if index >= length:
+                print("Invalid Index")
+            else:
+                if index == length - 1:
+                    del_node = self.tail
+                    prev_node = del_node.prev
+                    next_node = self.head
+                    prev_node.next = next_node
+                    next_node.prev = prev_node
+                else:
+                    i = 0
+                    del_node = Node(None)
+                    n = self.head.next
+                    while n is not self.head:
+                        if i == index:
+                            del_node = n
+                        n =  n.next
+                        i += 1
+                    prev_node = del_node.prev
+                    next_node = del_node.next
+                    prev_node.next = next_node
+                    next_node.prev = prev_node
+        else:
+            print("List already empty")
+
+
+    def removeKey(self, key):
+        length = self.size()
+        if length != 0:
+            if key != self.tail.data:
+                node = Node(None)
+                n = self.head.next
+                while n is not self.head:
+                    if n.data == key:
+                        node = n
+                    n = n.next
+                prev_node = node.prev
+                next_node = node.next
+                prev_node.next = next_node
+                next_node.prev = prev_node
+                print("Deleted key:", node.data)
+            else:
+                node = self.tail
+                prev_node = node.prev
+                next_node = self.head
+                prev_node.next = next_node
+                next_node.prev = prev_node
+                print("Deleted key:", node.data)
+        else:
+            print("List already empty")
+
+
+# Test Statements
+print("Creating a Dummy Headed Doubly Linked Circular List:")
+list_1 = DoublyList([1, 2, 7, 4, 5])
+print("showList() method:")
+list_1.showList()
+print("=======================================================")
+print("insertAtTail() method: ")
+print("Inserting a key(2) AT THE TAIL that already exists in the list:")
+list_1.insertAtTail(2)
+print("-------------------------------------------------------")
+print("Inserting a key(6) AT THE TAIL that does not exist in the list:")
+list_1.insertAtTail(6)
+list_1.showList()
+print("=======================================================")
+print("insert() method:")
+print("Inserting a key(3) at an INVALID INDEX(9):")
+list_1.insert(3, 9)
+print("-------------------------------------------------------")
+print("Inserting a key(2) at a GIVEN INDEX(2) that already exists in the list:")
+list_1.insert(2, 2)
+print("-------------------------------------------------------")
+print("Inserting a key(3) at a GIVEN INDEX(2) that does not exist in the list:")
+list_1.insert(3, 2)
+list_1.showList()
+print("=======================================================")
+print("remove() method:")
+print("Removing a node from a GIVEN INDEX(3):")
+list_1.remove(3)
+list_1.showList()
+print("-------------------------------------------------------")
+print("Trying to remove a node from an INVALID INDEX(9):")
+list_1.remove(9)
+print("=======================================================")
+print("removeKey() method:")
+print("Removing a GIVEN KEY(1) from the list:")
+list_1.removeKey(1)
+list_1.showList()
+
+
+#===============================================================================================================================================================#
+Output:
+#===============================================================================================================================================================#
+Creating a Dummy Headed Doubly Linked Circular List:
+showList() method:
+-> 1 <--> 2 <--> 7 <--> 4 <--> 5 <-
+=======================================================
+insertAtTail() method: 
+Inserting a key(2) AT THE TAIL that already exists in the list:
+The key 2 already exists.
+-------------------------------------------------------
+Inserting a key(6) AT THE TAIL that does not exist in the list:
+-> 1 <--> 2 <--> 7 <--> 4 <--> 5 <--> 6 <-
+=======================================================
+insert() method:
+Inserting a key(3) at an INVALID INDEX(9):
+Invalid Index
+-------------------------------------------------------
+Inserting a key(2) at a GIVEN INDEX(2) that already exists in the list:
+The key 2 already exists.
+-------------------------------------------------------
+Inserting a key(3) at a GIVEN INDEX(2) that does not exist in the list:
+-> 1 <--> 2 <--> 3 <--> 7 <--> 4 <--> 5 <--> 6 <-
+=======================================================
+remove() method:
+Removing a node from a GIVEN INDEX(3):
+-> 1 <--> 2 <--> 3 <--> 4 <--> 5 <--> 6 <-
+-------------------------------------------------------
+Trying to remove a node from an INVALID INDEX(9):
+Invalid Index
+=======================================================
+removeKey() method:
+Removing a GIVEN KEY(1) from the list:
+Deleted key: 1
+-> 2 <--> 3 <--> 4 <--> 5 <--> 6 <-
+
+Process finished with exit code 0

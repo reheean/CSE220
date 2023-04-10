@@ -1,0 +1,180 @@
+Assignment 5
+# Name: Rodoshie Reheean
+# ID: 21301417
+# Sec: 16
+
+# 1-(a)
+def factorial(num):
+    if num == 0:
+        return 1
+    else:
+        return num * factorial(num - 1)
+
+
+# 1-(b)
+def fibonacci(num):
+    if num == 0:
+        return 0
+    elif num == 1:
+        return 1
+    else:
+        return fibonacci(num - 2) + fibonacci(num - 1)
+
+
+# 1-(c)
+def showArray(array, i=0):
+    if i >= len(array):
+        return
+    else:
+        print(array[i], end=' ')
+        return showArray(array, i + 1)
+
+
+# 1-(d)
+def powerN(base, n):
+    if n == 0:
+        return 1
+    else:
+        return base * powerN(base, n - 1)
+
+
+# 2-(a)
+def binary(dnum):
+    if dnum == 0:
+        return
+    else:
+        binary(dnum // 2)
+        print(dnum % 2, end='')
+
+
+# Node and Linked list class
+class Node:
+    def __init__(self, data):
+        self.data = data
+        self.next = None
+
+
+class LinkedList:
+    def __init__(self, array):
+        if len(array) == 0:
+            self.head = None
+            print("Array cannot be empty.")
+        else:
+            self.head = Node(array[0])
+            temp = self.head
+            for i in range(1, len(array)):
+                temp.next = Node(array[i])
+                temp = temp.next
+
+    def retHead(self):
+        return self.head
+
+
+# 2-(b)
+def addElements(head):
+    if head is None:
+        return 0
+    else:
+        return head.data + addElements(head.next)
+
+
+# 2-(c)
+def printReverse(head):
+    if head is None:
+        return
+    else:
+        printReverse(head.next)
+        print(head.data)
+
+
+# 3
+def hocBuilder(height):
+    if height == 0:
+        return 0
+    elif height == 1:
+        return 8
+    else:
+        return 5 + hocBuilder(height - 1)
+
+
+# 4-(a)
+def stairLeft(height, string='', i=1):
+    if i > height:
+        return
+    else:
+        string += str(i)
+        print(string)
+        stairLeft(height, string, i + 1)
+
+
+# 4-(b)
+def stairRight(height, i=1, temp=''):
+    if i > height:
+        return
+    else:
+        temp += str(i)
+        string = (' ' * (height - i)) + temp
+        print(string)
+        stairRight(height, i + 1, temp)
+
+
+# 5
+class FinalQ:
+    def print(self, array, idx):
+        if idx < len(array):
+            profit = self.calcProfit(array[idx])
+            print('Investment: %s; Profit: %s' % (array[idx], profit))
+        else:
+            print('Index out of range!')
+
+    def calcProfit(self, investment):
+        if investment <= 25000:
+            return 0.0
+        elif investment == 100000:
+            return (investment - 25000) * 0.045
+        else:
+            return (investment - 100000) * 0.08 + self.calcProfit(100000)
+
+
+# Tester statements
+print("=============================================================")
+print('Factorial recursive method--> Factorial of 5:', factorial(5))
+print("=============================================================")
+print('Fibonacci recursive method--> 10th fibonacci number:', fibonacci(10))
+print("=============================================================")
+print('Printing elements of array recursive method: ', end='')
+showArray([1, 2, 3, 4, 5])
+print()
+print("=============================================================")
+print('Exponential recursive method--> (2 to the power 5):', powerN(2, 5))
+print("=============================================================")
+print("Decimal to Binary recursive method--> Converting 25 to its binary form: ", end='')
+binary(25)
+print()
+print("=============================================================")
+list1 = LinkedList([1, 2, 3, 4])
+head1 = list1.retHead()
+print("Recursive method to add the elements of a non-dummy headed singly linked list-->[1, 2, 3, 4]: ", end='')
+print(addElements(head1))
+print("=============================================================")
+print("Recursive method to print the elements of a singly linked list in reversed order-->[1, 2, 3, 4]:")
+printReverse(head1)
+print("=============================================================")
+print("Recursive method to calculate number of card required to build ‘house of cards’ of height given by parameter:")
+print('Given height is 4, the number of cards needed: ', end='')
+print(hocBuilder(4))
+print("=============================================================")
+print("Recursive method to print pattern of stair from left to right--> Height = 5:")
+stairLeft(6)
+print("=============================================================")
+print("Recursive method to print pattern of stair from right to left--> Height = 5:")
+stairRight(5)
+print("=============================================================")
+print("Calculating Profit from Investment--> [25000, 100000, 250000, 350000]: ")
+arr = [25000, 100000, 250000, 350000]
+f = FinalQ()
+f.print(arr, 0)
+f.print(arr, 1)
+f.print(arr, 2)
+f.print(arr, 3)
+print("=============================================================")
